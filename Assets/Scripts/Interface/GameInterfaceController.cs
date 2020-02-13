@@ -25,7 +25,7 @@ namespace MynetDemo.Interface
                 GameObject button = Instantiate(_button, _transform);
                 button.GetComponent<RectTransform>().anchoredPosition = new Vector2(i % 5 * 90f, i / 5 * 90f);
                 button.GetComponent<Button>().onClick.AddListener(_skillSet.Skills[i].Activate);
-                button.GetComponent<Image>().sprite = _skillSet.Skills[i].GetSprite();
+                button.GetComponent<Image>().sprite = _skillSet.Skills[i].Image;
             }
         }
 

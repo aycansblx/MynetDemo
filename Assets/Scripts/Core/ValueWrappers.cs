@@ -3,14 +3,24 @@ using UnityEngine;
 
 namespace MynetDemo.Core
 {
+    /// <summary>
+    /// Stores stats, especially RPGish stats.
+    /// </summary>
     public class Attribute
     {
         readonly float _baseValue;
 
         readonly List<Modifier> _modifiers;
 
+        /// <summary>
+        /// Returns the current value of the attribute.
+        /// </summary>
         public float Value { get; private set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="baseValue">The base value of the attribute.</param>
         public Attribute(float baseValue)
         {
             _baseValue = baseValue;
@@ -18,6 +28,9 @@ namespace MynetDemo.Core
             CalculateValue();
         }
 
+        /// <summary>
+        /// Calculates the value of the attribute after every modification.
+        /// </summary>
         void CalculateValue()
         {
             Value = _baseValue;
@@ -27,18 +40,29 @@ namespace MynetDemo.Core
             }
         }
 
+        /// <summary>
+        /// Adds a modifier to the attribute.
+        /// </summary>
+        /// <param name="modifier">The modifier to be added.</param>
         public void AddModifier(Modifier modifier)
         {
             _modifiers.Add(modifier);
             CalculateValue();
         }
 
+        /// <summary>
+        /// Removes a modifier from the attribute
+        /// </summary>
+        /// <param name="modifier">The modifier to be removed.</param>
         public void RemoveModifier(Modifier modifier)
         {
             _modifiers.Remove(modifier);
             CalculateValue();
         }
 
+        /// <summary>
+        /// Resets an attribute. After calling this function, the attribute is equal to the base value.
+        /// </summary>
         public void Reset()
         {
             _modifiers.Clear();
@@ -46,18 +70,31 @@ namespace MynetDemo.Core
         }
     }
 
+    /// <summary>
+    /// Modifies attribute values.
+    /// </summary>
     public abstract class Modifier
     {
         protected readonly float _modificationValue;
 
         protected readonly string _modificationName;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="value">Modification value.</param>
+        /// <param name="name">Modifier name.</param>
         public Modifier(float value, string name)
         {
             _modificationValue = value;
             _modificationName = name;
         }
 
+        /// <summary>
+        /// Returns the modification amount with respect to a baseValue.
+        /// </summary>
+        /// <param name="baseValue">The base value of the attribute.</param>
+        /// <returns></returns>
         public abstract float GetModification(float baseValue);
 
         public override bool Equals(object obj)
@@ -68,6 +105,9 @@ namespace MynetDemo.Core
         public override int GetHashCode() { return ToString().GetHashCode(); }
     }
 
+    /// <summary>
+    /// This type of modifier adds modification value directly to the attribute.
+    /// </summary>
     public class AdditionModifier : Modifier
     {
         public AdditionModifier(float value, string name) : base(value, name)
@@ -82,6 +122,9 @@ namespace MynetDemo.Core
         }
     }
 
+    /// <summary>
+    /// This type of modifier adds modification value times base value to the attribute.
+    /// </summary>
     public class MultiplicationModifier : Modifier
     {
         public MultiplicationModifier(float value, string name) : base(value, name)

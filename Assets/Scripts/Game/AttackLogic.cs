@@ -1,18 +1,43 @@
-﻿using MynetDemo.Core;
+﻿using DG.Tweening;
+using MynetDemo.Core;
 using MynetDemo.Manager;
-using DG.Tweening;
 using UnityEngine;
 
 namespace MynetDemo.Game
 {
+    /// <summary>
+    /// Ranged attack interface.
+    /// </summary>
     public interface IRangedAttack
     {
+        /// <summary>
+        /// Returns the attack speed attribute.
+        /// </summary>
         Attribute AttackSpeed { get; }
+
+        /// <summary>
+        /// Returns the projectile speed attribute.
+        /// </summary>
         Attribute ProjectileSpeed { get; }
+
+        /// <summary>
+        /// Updates the ranged attack timer.
+        /// </summary>
+        /// <param name="deltaTime">Passed time since the previous frame.</param>
+        /// <returns>True if the timer exceeds AttackSpeed attribute value.</returns>
         bool UpdateTimer(float deltaTime);
+
+        /// <summary>
+        /// Shoots a projectile.
+        /// </summary>
+        /// <param name="position">Starting position of the projectile.</param>
+        /// <param name="direction">Movement direction of the projectile.</param>
         void Shoot(Vector3 position, float direction);
     }
 
+    /// <summary> 
+    /// The default ranged attack logic. It is a concrete class.
+    /// </summary>
     public class DefaultRangedAttack : IRangedAttack
     {
         const float _PROJECTILE_RANGE_ = 15f;
@@ -24,6 +49,12 @@ namespace MynetDemo.Game
         public Attribute AttackSpeed { get; }
         public Attribute ProjectileSpeed { get; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="projectile">Projectile prefab.</param>
+        /// <param name="attackSpeed">Base attack speed.</param>
+        /// <param name="projectileSpeed">Base projectile speed.</param>
         public DefaultRangedAttack(GameObject projectile,  float attackSpeed, float projectileSpeed)
         {
             _projectile = projectile;
@@ -32,6 +63,10 @@ namespace MynetDemo.Game
             ProjectileSpeed = new Attribute(projectileSpeed);
         }
 
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="rangedAttack">The ranged attack logic which will be copied.</param>
         public DefaultRangedAttack(DefaultRangedAttack rangedAttack)
         {
             _timer = rangedAttack._timer;
@@ -66,6 +101,9 @@ namespace MynetDemo.Game
         }
     }
 
+    /// <summary>
+    /// The decorator for the ranged attack logic.
+    /// </summary>
     public abstract class RangedAttackDecorator : IRangedAttack
     {
         protected IRangedAttack _rangedAttack;
@@ -73,6 +111,10 @@ namespace MynetDemo.Game
         public Attribute AttackSpeed { get { return _rangedAttack.AttackSpeed; } }
         public Attribute ProjectileSpeed { get { return _rangedAttack.ProjectileSpeed; } }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="rangedAttack">The ranged attack logic which will be decorated.</param>
         public RangedAttackDecorator(IRangedAttack rangedAttack)
         {
             _rangedAttack = rangedAttack;
@@ -89,6 +131,9 @@ namespace MynetDemo.Game
         }
     }
 
+    /// <summary>
+    /// Shoots triple arrows.
+    /// </summary>
     public class RangedAttackWithSkillOne : RangedAttackDecorator
     {
         public RangedAttackWithSkillOne(IRangedAttack rangedAttack) : base(rangedAttack) { }
@@ -101,6 +146,9 @@ namespace MynetDemo.Game
         }
     }
 
+    /// <summary>
+    /// Shoots two sequential arrows.
+    /// </summary>
     public class RangedAttackWithSkillTwo:  RangedAttackDecorator
     {
         const float _DURATION_BETWEEN_ATTACKS_ = 0.3f;

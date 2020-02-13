@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace MynetDemo.Game
 {
+    /// <summary>
+    /// This class is the main controller of the character.
+    /// </summary>
     public class Character : MonoBehaviour
     {
         const float _LINEAR_SPEED_ = 3f;
@@ -12,36 +15,23 @@ namespace MynetDemo.Game
         [SerializeField] Vector3 _inScreenPosition;
         [SerializeField] Vector3 _outScreenPosition;
 
-        [SerializeField] GameObject _projectile;
-
-        public IRangedAttack RangedAttack { get; set; }
-
         void OnEnable()
         {
             GameFlowManager.OnGameStateChange += OnGameStateChange;
+            SkillManager.OnAttack += OnAttack;
         }
 
         void OnDisable()
         {
             GameFlowManager.OnGameStateChange -= OnGameStateChange;
+            SkillManager.OnAttack -= OnAttack;
         }
 
-        void Start()
-        {
-            RangedAttack = new DefaultRangedAttack(_projectile, 2f, 5f);
-        }
-
-        void Update()
-        {
-            if (GameFlowManager.Instance.State == GameFlowManager.GameState.PLAY)
-            {
-                if (RangedAttack.UpdateTimer(Time.deltaTime))
-                {
-                    RangedAttack.Shoot(transform.position, transform.eulerAngles.x);
-                }
-            }
-        }
-
+        /// <summary>
+        /// Registered method to GameFlowManager's OnGammeStateChange event.
+        /// </summary>
+        /// <param name="oldState">The previous game state.</param>
+        /// <param name="newState">The current game state.</param>
         void OnGameStateChange(GameFlowManager.GameState oldState, GameFlowManager.GameState newState)
         {
             if (oldState == GameFlowManager.GameState.MENU && newState == GameFlowManager.GameState.TRANSITION)
@@ -55,6 +45,15 @@ namespace MynetDemo.Game
             }
         }
 
+        void OnAttack()
+        {
+            SkillManager.Instance.RangedAttack.Shoot(transform.position, transform.eulerAngles.x);
+        }
+
+        /// <summary>
+        /// This function turns the character's face to a given world position.
+        /// </summary>
+        /// <param name="worldPosition">The position where the character will look at.</param>
         void FaceTo(Vector3 worldPosition)
         {
             Vector3 diff = worldPosition - transform.position;
@@ -63,11 +62,19 @@ namespace MynetDemo.Game
             transform.DORotateQuaternion(Quaternion.Euler(degree, -90f, 90f), Mathf.Abs(degree) / _ANGULAR_SPEED_);
         }
 
+        /// <summary>
+        /// Calculates the traverse duration for a given destination.
+        /// </summary>
+        /// <param name="worldPosition">The destination of the traverse.</param>
+        /// <returns></returns>
         float GetTraverseDuration(Vector3 worldPosition)
         {
             return Vector3.Distance(transform.position, worldPosition) / _LINEAR_SPEED_;
         }
 
+        /// <summary>
+        /// When called, the character enters the screen and then changes the game state.
+        /// </summary>
         void EnterScreen()
         {
             FaceTo(_inScreenPosition);
@@ -76,6 +83,9 @@ namespace MynetDemo.Game
             });
         }
 
+        /// <summary>
+        /// When called, the character leaves the screen and then changes the game state.
+        /// </summary>
         void LeaveScreen()
         {
             FaceTo(_outScreenPosition);

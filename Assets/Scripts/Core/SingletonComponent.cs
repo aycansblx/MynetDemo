@@ -2,10 +2,16 @@
 
 namespace MynetDemo.Core
 {
+    /// <summary>
+    /// Classes derived from this class become singleton.
+    /// </summary>
 	public abstract class SingletonComponent<T> : MonoBehaviour where T : MonoBehaviour
 	{
 		static T _instance = null;
 
+        /// <summary>
+        /// Returns the singleton instance.
+        /// </summary>
 		public static T Instance
 		{
 			get
@@ -44,6 +50,10 @@ namespace MynetDemo.Core
 			_instance = null;
 		}
 
+        /// <summary>
+        /// Checks if the singleton instance is active.
+        /// </summary>
+        /// <returns>True if the singleton instance is active.</returns>
 		public static bool IsSingletonComponentActive()
 		{
 			return _instance != null;
