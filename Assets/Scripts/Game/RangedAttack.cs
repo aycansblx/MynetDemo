@@ -7,6 +7,8 @@ namespace MynetDemo.Game
 {
     public interface IRangedAttack
     {
+        Attribute AttackSpeed { get; }
+        Attribute ProjectileSpeed { get; }
         bool UpdateTimer(float deltaTime);
         void Shoot(Vector3 position, float direction);
     }
@@ -19,15 +21,15 @@ namespace MynetDemo.Game
 
         readonly GameObject _projectile;
 
-        public Attribute AttackSpeed { get; private set; }
-        public Attribute ArrowSpeed { get; private set; }
+        public Attribute AttackSpeed { get; }
+        public Attribute ProjectileSpeed { get; }
 
-        public DefaultRangedAttack(GameObject projectile,  float attackSpeed, float arrowSpeed)
+        public DefaultRangedAttack(GameObject projectile,  float attackSpeed, float projectileSpeed)
         {
             _projectile = projectile;
 
             AttackSpeed = new Attribute(attackSpeed);
-            ArrowSpeed = new Attribute(arrowSpeed);
+            ProjectileSpeed = new Attribute(projectileSpeed);
         }
 
         public DefaultRangedAttack(DefaultRangedAttack rangedAttack)
@@ -36,7 +38,7 @@ namespace MynetDemo.Game
             _projectile = rangedAttack._projectile;
 
             AttackSpeed = rangedAttack.AttackSpeed;
-            ArrowSpeed = rangedAttack.ArrowSpeed;
+            ProjectileSpeed = rangedAttack.ProjectileSpeed;
         }
 
         public bool UpdateTimer(float deltaTime)
@@ -58,7 +60,7 @@ namespace MynetDemo.Game
             target.x += _PROJECTILE_RANGE_ * Mathf.Cos(direction * Mathf.Deg2Rad);
             target.y += _PROJECTILE_RANGE_ * Mathf.Sin(direction * Mathf.Deg2Rad);
 
-            projectile.transform.DOMove(target, _PROJECTILE_RANGE_ / ArrowSpeed.Value).OnComplete(() => {
+            projectile.transform.DOMove(target, _PROJECTILE_RANGE_ / ProjectileSpeed.Value).OnComplete(() => {
                 PoolingManager.Instance.Add(projectile);
             });
         }
@@ -67,6 +69,9 @@ namespace MynetDemo.Game
     public abstract class RangedAttackDecorator : IRangedAttack
     {
         protected IRangedAttack _rangedAttack;
+
+        public Attribute AttackSpeed { get { return _rangedAttack.AttackSpeed; } }
+        public Attribute ProjectileSpeed { get { return _rangedAttack.ProjectileSpeed; } }
 
         public RangedAttackDecorator(IRangedAttack rangedAttack)
         {

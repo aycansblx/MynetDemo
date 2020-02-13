@@ -14,7 +14,7 @@ namespace MynetDemo.Game
 
         [SerializeField] GameObject _projectile;
 
-        public IRangedAttack RangedAttack { get; private set; }
+        public IRangedAttack RangedAttack { get; set; }
 
         void OnEnable()
         {
