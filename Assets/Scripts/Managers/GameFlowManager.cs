@@ -13,6 +13,7 @@ namespace MynetDemo.Manager
         void Start()
         {
             SetState(GameState.MENU);
+            SetState(GameState.TRANSITION);
         }
 
         void Update()
@@ -32,7 +33,7 @@ namespace MynetDemo.Manager
 
         public enum GameState
         {
-            NONE, MENU, PLAY, PAUSE,
+            NONE, MENU, PLAY, PAUSE, TRANSITION,
         }
     }
 }
