@@ -6,8 +6,8 @@ namespace MynetDemo.Game
 {
     public class Character : MonoBehaviour
     {
-        const float _LINEAR_SPEED_ = 5f;
-        const float _ANGULAR_SPEED_ = 360f;
+        const float _LINEAR_SPEED_ = 3f;
+        const float _ANGULAR_SPEED_ = 180f;
 
         [SerializeField] Vector3 _inScreenPosition;
         [SerializeField] Vector3 _outScreenPosition;
@@ -60,10 +60,7 @@ namespace MynetDemo.Game
             Vector3 diff = worldPosition - transform.position;
             float degree = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 
-            Vector3 eulerAngles = transform.eulerAngles;
-            eulerAngles.x = degree;
-
-            transform.DORotate(eulerAngles, Mathf.Abs(degree) / _ANGULAR_SPEED_);
+            transform.DORotateQuaternion(Quaternion.Euler(degree, -90f, 90f), Mathf.Abs(degree) / _ANGULAR_SPEED_);
         }
 
         float GetTraverseDuration(Vector3 worldPosition)

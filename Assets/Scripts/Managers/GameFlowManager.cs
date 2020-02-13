@@ -1,4 +1,5 @@
 ﻿using MynetDemo.Core;
+using UnityEngine;
 
 namespace MynetDemo.Manager
 {
@@ -12,7 +13,14 @@ namespace MynetDemo.Manager
         void Start()
         {
             SetState(GameState.MENU);
-            SetState(GameState.TRANSITION);
+        }
+
+        void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                SetState(GameState.TRANSITION);
+            }
         }
 
         public void SetState(GameState newState)
