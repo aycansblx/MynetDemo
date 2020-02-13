@@ -1,5 +1,4 @@
 ﻿using MynetDemo.Core;
-using UnityEngine;
 
 namespace MynetDemo.Manager
 {
@@ -14,14 +13,6 @@ namespace MynetDemo.Manager
         {
             SetState(GameState.MENU);
             SetState(GameState.TRANSITION);
-        }
-
-        void Update()
-        {
-            if (State == GameState.PLAY)
-            {
-                // ... update timers ... //
-            }
         }
 
         public void SetState(GameState newState)

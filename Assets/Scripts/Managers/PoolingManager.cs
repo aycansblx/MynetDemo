@@ -56,7 +56,7 @@ namespace MynetDemo.Manager
                 newObject.SetActive(true);
             }
 
-            AssignTransform(obj.transform, position, rotation);
+            AssignTransform(newObject.transform, position, rotation);
 
             return newObject;
         }

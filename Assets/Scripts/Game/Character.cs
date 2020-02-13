@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using MynetDemo.Manager;
 using UnityEngine;
 
@@ -14,6 +12,10 @@ namespace MynetDemo.Game
         [SerializeField] Vector3 _inScreenPosition;
         [SerializeField] Vector3 _outScreenPosition;
 
+        [SerializeField] GameObject _projectile;
+
+        public IRangedAttack RangedAttack { get; private set; }
+
         void OnEnable()
         {
             GameFlowManager.OnGameStateChange += OnGameStateChange;
@@ -24,9 +26,20 @@ namespace MynetDemo.Game
             GameFlowManager.OnGameStateChange -= OnGameStateChange;
         }
 
+        void Start()
+        {
+            RangedAttack = new DefaultRangedAttack(_projectile, 2f, 5f);
+        }
+
         void Update()
         {
-
+            if (GameFlowManager.Instance.State == GameFlowManager.GameState.PLAY)
+            {
+                if (RangedAttack.UpdateTimer(Time.deltaTime))
+                {
+                    RangedAttack.Shoot(transform.position, transform.eulerAngles.x);
+                }
+            }
         }
 
         void OnGameStateChange(GameFlowManager.GameState oldState, GameFlowManager.GameState newState)

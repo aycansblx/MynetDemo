@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using MynetDemo.Core;
+﻿using MynetDemo.Core;
 using MynetDemo.Manager;
+using DG.Tweening;
+using UnityEngine;
 
 namespace MynetDemo.Game
 {
@@ -12,6 +13,8 @@ namespace MynetDemo.Game
 
     public class DefaultRangedAttack : IRangedAttack
     {
+        const float _PROJECTILE_RANGE_ = 15f;
+
         float _timer;
 
         readonly GameObject _projectile;
@@ -48,7 +51,16 @@ namespace MynetDemo.Game
 
         public void Shoot(Vector3 position, float direction)
         {
-            PoolingManager.Instance.Get(_projectile, position, Quaternion.Euler(0f, 0f, direction + 90f));
+            GameObject projectile = PoolingManager.Instance.Get(_projectile, position, Quaternion.Euler(0f, 0f, direction + 90f));
+
+            Vector3 target = projectile.transform.position;
+
+            target.x += _PROJECTILE_RANGE_ * Mathf.Cos(direction * Mathf.Deg2Rad);
+            target.y += _PROJECTILE_RANGE_ * Mathf.Sin(direction * Mathf.Deg2Rad);
+
+            projectile.transform.DOMove(target, _PROJECTILE_RANGE_ / ArrowSpeed.Value).OnComplete(() => {
+                PoolingManager.Instance.Add(projectile);
+            });
         }
     }
 
@@ -88,11 +100,34 @@ namespace MynetDemo.Game
     {
         const float _DURATION_BETWEEN_ATTACKS_ = 0.3f;
 
-        public RangedAttackWithSkillTwo(IRangedAttack rangedAttack) : base(rangedAttack) { }
+        float _secondAttackTimer;
+
+        public RangedAttackWithSkillTwo(IRangedAttack rangedAttack) : base(rangedAttack)
+        {
+            _secondAttackTimer = 0f;
+        }
 
         public override bool UpdateTimer(float deltaTime)
         {
-            return base.UpdateTimer(deltaTime);
+            if (_secondAttackTimer == 0f)
+            {
+                if (base.UpdateTimer(deltaTime))
+                {
+                    _secondAttackTimer = _DURATION_BETWEEN_ATTACKS_;
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                _secondAttackTimer -= deltaTime;
+                if (_secondAttackTimer <= 0f)
+                {
+                    _secondAttackTimer = 0f;
+                    return true;
+                }
+                return false;
+            }
         }
 
         public override void Shoot(Vector3 position, float direction)
