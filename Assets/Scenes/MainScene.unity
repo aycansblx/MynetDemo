@@ -181,26 +181,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 301008fe883454c5985ddf63411ca949, type: 3}
---- !u!1 &136440081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5919483268988085519, guid: 301008fe883454c5985ddf63411ca949,
-    type: 3}
-  m_PrefabInstance: {fileID: 136440080}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &136440082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136440081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f324ba34c52624624b10ddaeb07a0bd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inScreenPosition: {x: 0, y: 1, z: -0.5}
-  _outScreenPosition: {x: 0, y: 7, z: -0.5}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +317,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_MNG_PoolingManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8082276047424247207, guid: 7ab0b4885be1d4559be28e99237128a6,
+        type: 3}
+      propertyPath: _activeObjectsParent
+      value: 
+      objectReference: {fileID: 762205917}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ab0b4885be1d4559be28e99237128a6, type: 3}
 --- !u!1 &454639457
@@ -519,6 +504,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -19, y: 0, z: 0}
+--- !u!1 &762205916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762205917}
+  m_Layer: 0
+  m_Name: Active Objects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &762205917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762205916}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.02500251, y: 7, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1204475395
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,8 @@ namespace MynetDemo.Manager
 {
     public class PoolingManager : SingletonComponent<PoolingManager>
     {
+        [SerializeField] Transform _activeObjectsParent;
+
         readonly Dictionary<string, Queue<GameObject>> _pool = new Dictionary<string, Queue<GameObject>>();
 
         GameObject Create(GameObject obj)
@@ -15,9 +17,9 @@ namespace MynetDemo.Manager
             return newObject;
         }
 
-        void AssignTransform(Transform obj, Transform parent, Vector3 position, Quaternion rotation)
+        void AssignTransform(Transform obj, Vector3 position, Quaternion rotation)
         {
-            obj.SetParent(parent);
+            obj.SetParent(_activeObjectsParent);
             obj.position = position;
             obj.rotation = rotation;
         }
@@ -36,7 +38,7 @@ namespace MynetDemo.Manager
             obj.SetActive(false);
         }
 
-        public GameObject Get(GameObject obj, Transform parent, Vector3 position, Quaternion rotation)
+        public GameObject Get(GameObject obj, Vector3 position, Quaternion rotation)
         {
             GameObject newObject;
 
@@ -54,7 +56,7 @@ namespace MynetDemo.Manager
                 newObject.SetActive(true);
             }
 
-            AssignTransform(obj.transform, parent, position, rotation);
+            AssignTransform(obj.transform, position, rotation);
 
             return newObject;
         }
