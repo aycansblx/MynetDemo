@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Skill_DecreaseCooldown
   m_EditorClassIdentifier: 
   _name: Decrease  Cooldown
-  _sprite: {fileID: 21300000, guid: ca674aa5657794d2da053ca942118f9b, type: 3}
+  _description: 
+  _image: {fileID: 21300000, guid: ca674aa5657794d2da053ca942118f9b, type: 3}
   _code: 2

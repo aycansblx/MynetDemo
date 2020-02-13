@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Skill_IncreaseArrowSpeed
   m_EditorClassIdentifier: 
   _name: Increase Arrow Speed
-  _sprite: {fileID: 21300000, guid: bd830e660a59147b7ae51ec2d3afe00c, type: 3}
+  _description: 
+  _image: {fileID: 21300000, guid: bd830e660a59147b7ae51ec2d3afe00c, type: 3}
   _code: 3

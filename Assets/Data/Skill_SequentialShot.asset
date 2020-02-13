@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Skill_SequentialShot
   m_EditorClassIdentifier: 
   _name: Sequential Shot
-  _sprite: {fileID: 21300000, guid: 2f0c88681e230480f9493c4fe1f0dc25, type: 3}
-  _code: 0
+  _description: 
+  _image: {fileID: 21300000, guid: 2f0c88681e230480f9493c4fe1f0dc25, type: 3}
+  _code: 1

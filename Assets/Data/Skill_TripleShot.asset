@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Skill_TripleShot
   m_EditorClassIdentifier: 
   _name: Triple Shot
-  _sprite: {fileID: 21300000, guid: b3a0f6f120fbe4ac58e0033bbdb827f5, type: 3}
+  _description: 
+  _image: {fileID: 21300000, guid: b3a0f6f120fbe4ac58e0033bbdb827f5, type: 3}
   _code: 0
