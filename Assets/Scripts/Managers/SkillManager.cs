@@ -9,20 +9,23 @@ namespace MynetDemo.Manager
     {
         [SerializeField] GameObject _projectile;
 
+        int _skillsCastedSoFar;
+
         public IRangedAttack RangedAttack { get; set; }
 
         public delegate void OnAttackEvent();
         public static OnAttackEvent OnAttack;
 
+        public delegate void OnSkillCastEvent(int skillOrder, int skillsCastedSoFar);
+        public static OnSkillCastEvent OnSkillCast;
+
         void OnEnable()
         {
-            CharacterSkill.OnSkill += OnSkill;
             GameFlowManager.OnGameStateChange += OnGameStateChange;
         }
 
         void OnDisable()
         {
-            CharacterSkill.OnSkill -= OnSkill;
             GameFlowManager.OnGameStateChange -= OnGameStateChange;
         }
 
@@ -37,22 +40,22 @@ namespace MynetDemo.Manager
             }
         }
 
-        void OnSkill(SkillCode code)
+        public void CastSkill(int order, CharacterSkill characterSkill)
         {
             ISkillStrategy skillStrategy = null;
-            switch (code)
+            switch (characterSkill.Code)
             {
                 case SkillCode.TripleShot:
                     skillStrategy = new UpgradeToSkillOne();
                     break;
-                case SkillCode.SequentialShot:
+                case SkillCode.DoubleShot:
                     skillStrategy = new UpgradeToSkillTwo();
                     break;
-                case SkillCode.DecreaseCooldown:
-                    skillStrategy = new UpgradeAttackSpeed(new AdditionModifier(-1f, "Decrease Cooldown Skill"));
+                case SkillCode.Haste:
+                    skillStrategy = new UpgradeAttackSpeed(new AdditionModifier(-1f, characterSkill.Name));
                     break;
-                case SkillCode.IncreaseArrowSpeed:
-                    skillStrategy = new UpgradeProjectileSpeed(new MultiplicationModifier(0.5f, "Increase Arrow Speed Skill"));
+                case SkillCode.UberBolt:
+                    skillStrategy = new UpgradeProjectileSpeed(new MultiplicationModifier(0.5f, characterSkill.Name));
                     break;
                 case SkillCode.Clone:
                     skillStrategy = new CloneSkill();
@@ -60,6 +63,7 @@ namespace MynetDemo.Manager
             }
             Skill skill = new Skill(skillStrategy);
             skill.Perform();
+            OnSkillCast?.Invoke(order, ++_skillsCastedSoFar);
         }
 
         void OnGameStateChange(GameFlowManager.GameState oldState, GameFlowManager.GameState newState)
@@ -70,7 +74,18 @@ namespace MynetDemo.Manager
             }
             if (oldState == GameFlowManager.GameState.TRANSITION && newState == GameFlowManager.GameState.MENU)
             {
-                Destroy(GameObject.Find("Cloned Character"));
+                Character[] characters = FindObjectsOfType<Character>();
+                if (characters.Length > 1)
+                {
+                    foreach(Character character in characters)
+                    {
+                        if (character.transform != transform)
+                        {
+                            PoolingManager.Instance.Add(character.gameObject);
+                        }
+                    }
+                }
+                _skillsCastedSoFar = 0;
             }
         }
     }

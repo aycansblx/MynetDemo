@@ -114,9 +114,8 @@ namespace MynetDemo.Game
 
             Vector3 randomPosition = new Vector3(Random.Range(-2f, 2f), Random.Range(-4f, 2f), -0.5f);
 
-            GameObject clone = Object.Instantiate(objectToBeCloned, randomPosition, objectToBeCloned.transform.rotation);
+            GameObject clone = PoolingManager.Instance.Get(objectToBeCloned, randomPosition, objectToBeCloned.transform.rotation);
             Object.Destroy(clone.GetComponent<SkillManager>());
-            clone.name = "Cloned Character";
         }
     }
 }

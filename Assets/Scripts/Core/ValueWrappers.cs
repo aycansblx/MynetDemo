@@ -10,7 +10,7 @@ namespace MynetDemo.Core
     {
         readonly float _baseValue;
 
-        readonly List<Modifier> _modifiers;
+        readonly List<Modifier> _modifiers = new List<Modifier>();
 
         /// <summary>
         /// Returns the current value of the attribute.
@@ -24,12 +24,12 @@ namespace MynetDemo.Core
         public Attribute(float baseValue)
         {
             _baseValue = baseValue;
-            _modifiers = new List<Modifier>();
             CalculateValue();
         }
 
         /// <summary>
-        /// Calculates the value of the attribute after every modification.
+        /// Calculates the value of the attribute.
+        /// Called automatically after every modification.
         /// </summary>
         void CalculateValue()
         {
@@ -61,7 +61,7 @@ namespace MynetDemo.Core
         }
 
         /// <summary>
-        /// Resets an attribute. After calling this function, the attribute is equal to the base value.
+        /// Resets an attribute.
         /// </summary>
         public void Reset()
         {
@@ -91,7 +91,7 @@ namespace MynetDemo.Core
         }
 
         /// <summary>
-        /// Returns the modification amount with respect to a baseValue.
+        /// Returns the modification amount with respect to the provided baseValue.
         /// </summary>
         /// <param name="baseValue">The base value of the attribute.</param>
         /// <returns></returns>
@@ -113,7 +113,10 @@ namespace MynetDemo.Core
         public AdditionModifier(float value, string name) : base(value, name)
         { }
 
-        public override float GetModification(float baseValue) { return _modificationValue; }
+        public override float GetModification(float baseValue)
+        {
+            return _modificationValue;
+        }
 
         public override string ToString()
         {
@@ -123,14 +126,17 @@ namespace MynetDemo.Core
     }
 
     /// <summary>
-    /// This type of modifier adds modification value times base value to the attribute.
+    /// This type of modifier adds (modification value X base value) to the attribute.
     /// </summary>
     public class MultiplicationModifier : Modifier
     {
         public MultiplicationModifier(float value, string name) : base(value, name)
         { }
 
-        public override float GetModification(float baseValue) { return baseValue * _modificationValue; }
+        public override float GetModification(float baseValue)
+        {
+            return baseValue * _modificationValue;
+        }
 
         public override string ToString()
         {
