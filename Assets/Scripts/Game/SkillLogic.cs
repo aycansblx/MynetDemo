@@ -44,7 +44,7 @@ namespace MynetDemo.Game
     {
         public void Perform()
         {
-            SkillManager.Instance.RangedAttack = new RangedAttackWithSkillOne(SkillManager.Instance.RangedAttack);
+            SkillManager.Instance.RangedAttack = new TripleShotAttack(SkillManager.Instance.RangedAttack);
         }
     }
 
@@ -55,7 +55,7 @@ namespace MynetDemo.Game
     {
         public void Perform()
         {
-            SkillManager.Instance.RangedAttack = new RangedAttackWithSkillTwo(SkillManager.Instance.RangedAttack);
+            SkillManager.Instance.RangedAttack = new DoubleShotAttack(SkillManager.Instance.RangedAttack);
         }
     }
 

@@ -63,19 +63,6 @@ namespace MynetDemo.Game
             ProjectileSpeed = new Attribute(projectileSpeed);
         }
 
-        /// <summary>
-        /// Copy constructor.
-        /// </summary>
-        /// <param name="rangedAttack">The ranged attack logic which will be copied.</param>
-        public DefaultRangedAttack(DefaultRangedAttack rangedAttack)
-        {
-            _timer = rangedAttack._timer;
-            _projectile = rangedAttack._projectile;
-
-            AttackSpeed = rangedAttack.AttackSpeed;
-            ProjectileSpeed = rangedAttack.ProjectileSpeed;
-        }
-
         public bool UpdateTimer(float deltaTime)
         {
             if ((_timer += deltaTime) > AttackSpeed.Value)
@@ -134,9 +121,9 @@ namespace MynetDemo.Game
     /// <summary>
     /// Shoots triple arrows.
     /// </summary>
-    public class RangedAttackWithSkillOne : RangedAttackDecorator
+    public class TripleShotAttack : RangedAttackDecorator
     {
-        public RangedAttackWithSkillOne(IRangedAttack rangedAttack) : base(rangedAttack) { }
+        public TripleShotAttack(IRangedAttack rangedAttack) : base(rangedAttack) { }
 
         public override void Shoot(Vector3 position, float direction)
         {
@@ -149,13 +136,13 @@ namespace MynetDemo.Game
     /// <summary>
     /// Shoots two sequential arrows.
     /// </summary>
-    public class RangedAttackWithSkillTwo:  RangedAttackDecorator
+    public class DoubleShotAttack:  RangedAttackDecorator
     {
         const float _DURATION_BETWEEN_ATTACKS_ = 0.3f;
 
         float _secondAttackTimer;
 
-        public RangedAttackWithSkillTwo(IRangedAttack rangedAttack) : base(rangedAttack)
+        public DoubleShotAttack(IRangedAttack rangedAttack) : base(rangedAttack)
         {
             _secondAttackTimer = 0f;
         }

@@ -28,7 +28,7 @@ namespace MynetDemo.Game
         }
 
         /// <summary>
-        /// Registered method to GameFlowManager's OnGammeStateChange event.
+        /// Registered method to GameFlowManager's OnGameStateChange event.
         /// </summary>
         /// <param name="oldState">The previous game state.</param>
         /// <param name="newState">The current game state.</param>
