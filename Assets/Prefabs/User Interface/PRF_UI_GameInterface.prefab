@@ -49,8 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2acf9b698f99045378d6f3eace31fc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonPrefab: {fileID: 2802189953929597848, guid: bafad75c276fe4472a7e60cf9fd8bf17,
+    type: 3}
   _exitButton: {fileID: 8014869469604565540}
-  _button: {fileID: 2802189953929597848, guid: bafad75c276fe4472a7e60cf9fd8bf17, type: 3}
   _skillSet: {fileID: 11400000, guid: 1a58365f5d9f740aa9f9a64c590319b1, type: 2}
 --- !u!1001 &1360701978031367140
 PrefabInstance:

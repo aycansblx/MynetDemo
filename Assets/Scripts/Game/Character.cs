@@ -45,6 +45,9 @@ namespace MynetDemo.Game
             }
         }
 
+        /// <summary>
+        /// Registered method to SkillManager's OnAttack event.
+        /// </summary>
         void OnAttack()
         {
             SkillManager.Instance.RangedAttack.Shoot(transform.position, transform.eulerAngles.x);

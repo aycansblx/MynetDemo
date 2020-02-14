@@ -7,11 +7,15 @@ using System.Collections.Generic;
 
 namespace MynetDemo.Interface
 {
+    /// <summary>
+    /// A very simple game interface controller...
+    /// Controls the interface of the PLAY phase.
+    /// </summary>
     public class GameInterfaceController : MonoBehaviour
     {
-        [SerializeField] RectTransform _exitButton;
+        [SerializeField] GameObject _buttonPrefab;
 
-        [SerializeField] GameObject _button;
+        [SerializeField] RectTransform _exitButton;
 
         [SerializeField] CharacterSkillSet _skillSet;
 
@@ -41,24 +45,38 @@ namespace MynetDemo.Interface
             SkillManager.OnSkillCast -= OnSkillCast;
         }
 
+        /// <summary>
+        /// Registered method to GameFlowManager's OnGameStateChange event.
+        /// </summary>
+        /// <param name="oldState">The previous game state.</param>
+        /// <param name="newState">The current game state.</param>
         void OnGameStateChange(GameFlowManager.GameState oldState, GameFlowManager.GameState newState)
         {
             if (newState == GameFlowManager.GameState.PLAY)
             {
                 EnterScreen();
-                SetAllButtonInteractivities(true);
+                SetButtonActivities(true);
             }
         }
 
+        /// <summary>
+        /// Registered method to SkillManagers's OnSkillCast event.
+        /// </summary>
+        /// <param name="order">The order of the casted skill (in the skill set)</param>
+        /// <param name="skillsCastedSoFar">Skills casted so far.</param>
         void OnSkillCast(int order, int skillsCastedSoFar)
         {
             _skillButtons[order].interactable = false;
             if(skillsCastedSoFar == 3)
             {
-                SetAllButtonInteractivities(false);
+                SetButtonActivities(false);
             }
         }
 
+        /// <summary>
+        /// When called, Game Interface enters the screen.
+        /// When finished, exit button is triggered to enter the screen.
+        /// </summary>
         void EnterScreen()
         {
             _transform.DOAnchorPosY(0f, 1f).OnComplete(() =>
@@ -67,6 +85,10 @@ namespace MynetDemo.Interface
             });
         }
 
+        /// <summary>
+        /// When called, exit button leaves the screen first.
+        /// Then it triggers the whole interface to leave the screen.
+        /// </summary>
         public void LeaveScreen()
         {
             GameFlowManager.Instance.SetState(GameFlowManager.GameState.TRANSITION);
@@ -76,7 +98,11 @@ namespace MynetDemo.Interface
             });
         }
 
-        void SetAllButtonInteractivities(bool value)
+        /// <summary>
+        /// Sets button activities with respect to the given param.
+        /// </summary>
+        /// <param name="value">Provide true if you want all buttons interactable :)</param>
+        void SetButtonActivities(bool value)
         {
             foreach (Button skillButton in _skillButtons)
             {
@@ -84,24 +110,24 @@ namespace MynetDemo.Interface
             }
         }
 
+        /// <summary>
+        /// Creates skill button.
+        /// </summary>
+        /// <param name="order">Order of the skill in the skill set.</param>
+        /// <param name="skill">Skill data.</param>
         void CreateSkillButton(int order, CharacterSkill skill)
         {
-            GameObject skillButton = Instantiate(_button, _transform);
+            GameObject skillButton = Instantiate(_buttonPrefab, _transform);
 
             skillButton.GetComponent<RectTransform>().anchoredPosition =
                 new Vector2(order % 5 * 90f, order / 5 * 90f);
 
             Button buttonComponent = skillButton.GetComponent<Button>();
-            buttonComponent.onClick.AddListener(delegate { SkillButtonBehaviour(order, skill); });
+            buttonComponent.onClick.AddListener(delegate { SkillManager.Instance.CastSkill(order, skill); });
 
             skillButton.GetComponent<Image>().sprite = skill.Image;
 
             _skillButtons.Add(buttonComponent);
-        }
-
-        void SkillButtonBehaviour(int order, CharacterSkill skill)
-        {
-            SkillManager.Instance.CastSkill(order, skill);
         }
     }
 }

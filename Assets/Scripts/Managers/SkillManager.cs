@@ -46,10 +46,10 @@ namespace MynetDemo.Manager
             switch (characterSkill.Code)
             {
                 case SkillCode.TripleShot:
-                    skillStrategy = new UpgradeToSkillOne();
+                    skillStrategy = new UpgradeToTripleShot();
                     break;
                 case SkillCode.DoubleShot:
-                    skillStrategy = new UpgradeToSkillTwo();
+                    skillStrategy = new UpgradeToDoubleShot();
                     break;
                 case SkillCode.Haste:
                     skillStrategy = new UpgradeAttackSpeed(new AdditionModifier(-1f, characterSkill.Name));
@@ -58,7 +58,7 @@ namespace MynetDemo.Manager
                     skillStrategy = new UpgradeProjectileSpeed(new MultiplicationModifier(0.5f, characterSkill.Name));
                     break;
                 case SkillCode.Clone:
-                    skillStrategy = new CloneSkill();
+                    skillStrategy = new CloneTheCharacterRandomly();
                     break;
             }
             Skill skill = new Skill(skillStrategy);

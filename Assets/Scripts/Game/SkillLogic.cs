@@ -40,7 +40,7 @@ namespace MynetDemo.Game
     /// <summary>
     /// When this strategy is performed, the first skill becomes active.
     /// </summary>
-    public class UpgradeToSkillOne : ISkillStrategy
+    public class UpgradeToTripleShot : ISkillStrategy
     {
         public void Perform()
         {
@@ -51,7 +51,7 @@ namespace MynetDemo.Game
     /// <summary>
     /// When this strategy is performed, the second skill becomes active.
     /// </summary>
-    public class UpgradeToSkillTwo : ISkillStrategy
+    public class UpgradeToDoubleShot : ISkillStrategy
     {
         public void Perform()
         {
@@ -104,17 +104,24 @@ namespace MynetDemo.Game
     }
 
     /// <summary>
-    /// When this strategy is performed, the fifth skill becomes active.
+    /// When this strategy is performed, the character is cloned in a random position.
     /// </summary>
-    public class CloneSkill : ISkillStrategy
+    public class CloneTheCharacterRandomly : ISkillStrategy
     {
+        const float _Z_ = -.5f;
+
+        /* Scene Extents... */
+        readonly Vector2 _MIN_ = new Vector2(-2f, -4f);
+        readonly Vector2 _MAX_ = new Vector2(2f, 2f);
+
         public void Perform()
         {
             GameObject objectToBeCloned = SkillManager.Instance.gameObject;
 
-            Vector3 randomPosition = new Vector3(Random.Range(-2f, 2f), Random.Range(-4f, 2f), -0.5f);
+            Vector3 rndpos = new Vector3(Random.Range(_MIN_.x, _MAX_.x), Random.Range(_MIN_.y, _MAX_.y), _Z_);
 
-            GameObject clone = PoolingManager.Instance.Get(objectToBeCloned, randomPosition, objectToBeCloned.transform.rotation);
+            GameObject clone = PoolingManager.Instance.Get(objectToBeCloned, rndpos, objectToBeCloned.transform.rotation);
+
             Object.Destroy(clone.GetComponent<SkillManager>());
         }
     }
