@@ -138,7 +138,7 @@ namespace MynetDemo.Game
     /// </summary>
     public class DoubleShotAttack:  RangedAttackDecorator
     {
-        const float _DURATION_BETWEEN_ATTACKS_ = 0.3f;
+        const float _DURATION_BETWEEN_ATTACKS_ = 0.15f;
 
         float _secondAttackTimer;
 

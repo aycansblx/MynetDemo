@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace MynetDemo.Manager
 {
+    /// <summary>
+    /// Stores, changes and informs other components about game state.
+    /// </summary>
     public class GameFlowManager : SingletonComponent<GameFlowManager>
     {
         public GameState State { get; private set; } = GameState.NONE;
@@ -23,6 +26,10 @@ namespace MynetDemo.Manager
             }
         }
 
+        /// <summary>
+        /// Use this function to change the game state.
+        /// </summary>
+        /// <param name="newState">New game state</param>
         public void SetState(GameState newState)
         {
             GameState oldState = State;
@@ -34,5 +41,7 @@ namespace MynetDemo.Manager
         {
             NONE, MENU, PLAY, PAUSE, TRANSITION,
         }
+
+        /* Well, we don't use PAUSE state. */
     }
 }

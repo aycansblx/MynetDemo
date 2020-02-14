@@ -5,8 +5,16 @@ using UnityEngine;
 
 namespace MynetDemo.Manager
 {
+    /// <summary>
+    /// Character's skill manager.
+    /// We attach this to character object.
+    /// If the character is cloned, remove it from the cloned object (since it is a singleton).
+    /// </summary>
     public class SkillManager : SingletonComponent<SkillManager>
     {
+        [SerializeField] float _startingAttackSpeed;
+        [SerializeField] float _startingArrowSpeed;
+
         [SerializeField] GameObject _projectile;
 
         int _skillsCastedSoFar;
@@ -40,6 +48,11 @@ namespace MynetDemo.Manager
             }
         }
 
+        /// <summary>
+        /// When a skill is casted this function is called.
+        /// </summary>
+        /// <param name="order">Order of the skill in the skill set.</param>
+        /// <param name="characterSkill">Skill data</param>
         public void CastSkill(int order, CharacterSkill characterSkill)
         {
             ISkillStrategy skillStrategy = null;
@@ -66,28 +79,40 @@ namespace MynetDemo.Manager
             OnSkillCast?.Invoke(order, ++_skillsCastedSoFar);
         }
 
+        /// <summary>
+        /// Registered method to GameFlowManager's OnGameStateChange event.
+        /// </summary>
+        /// <param name="oldState">The previous game state.</param>
+        /// <param name="newState">The current game state.</param>
         void OnGameStateChange(GameFlowManager.GameState oldState, GameFlowManager.GameState newState)
         {
             if (oldState == GameFlowManager.GameState.MENU && newState == GameFlowManager.GameState.TRANSITION)
             {
-                RangedAttack = new DefaultRangedAttack(_projectile, 2f, 7f);
+                RangedAttack = new DefaultRangedAttack(_projectile, _startingAttackSpeed, _startingArrowSpeed);
             }
             if (oldState == GameFlowManager.GameState.TRANSITION && newState == GameFlowManager.GameState.MENU)
             {
-                Character[] characters = FindObjectsOfType<Character>();
-                if (characters.Length > 1)
+                Clean();
+            }
+        }
+
+        /// <summary>
+        /// Cleans everything related to skill usages.
+        /// </summary>
+        void Clean()
+        {
+            Character[] characters = FindObjectsOfType<Character>();
+            if (characters.Length > 1)
+            {
+                foreach (Character character in characters)
                 {
-                    foreach(Character character in characters)
+                    if (character.transform != transform)
                     {
-                        if (character.transform != transform)
-                        {
-                            PoolingManager.Instance.Add(character.gameObject);
-                        }
+                        PoolingManager.Instance.Add(character.gameObject);
                     }
                 }
-                _skillsCastedSoFar = 0;
             }
+            _skillsCastedSoFar = 0;
         }
     }
 }
-
